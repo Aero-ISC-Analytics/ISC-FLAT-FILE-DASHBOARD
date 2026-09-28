@@ -1,0 +1,49 @@
+name: Sync from Bitbucket
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out GitHub publishing mirror
+        uses: actions/checkout@v4
+
+      - name: Clone Bitbucket source
+        env:
+          BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
+        run: |
+          git clone \
+            --depth 1 \
+            --branch main \
+            "https://x-token-auth:${BITBUCKET_TOKEN}@bitbucket.honaero.com/scm/aeroisca/isc-flat-file-requ-dashboard.git" \
+            "$RUNNER_TEMP/bitbucket-source"
+
+      - name: Synchronize website files
+        run: |
+          rsync -av --delete \
+            --exclude=".git/" \
+            --exclude=".github/" \
+            "$RUNNER_TEMP/bitbucket-source/" \
+            "$GITHUB_WORKSPACE/"
+
+      - name: Publish changes
+        run: |
+          git config user.name "Bitbucket Pages Sync"
+          git config user.email "actions@github.com"
+          git add --all
+
+          if git diff --cached --quiet; then
+            echo "GitHub already matches Bitbucket."
+            exit 0
+          fi
+
+          git commit -m "Sync website from Bitbucket"
+          git push
