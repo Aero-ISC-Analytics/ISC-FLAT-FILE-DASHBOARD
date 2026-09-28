@@ -20,10 +20,10 @@ jobs:
         env:
           BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
         run: |
-          git clone \
+          git -c http.extraHeader="Authorization: Bearer ${BITBUCKET_TOKEN}" clone \
             --depth 1 \
             --branch main \
-            "https://x-token-auth:${BITBUCKET_TOKEN}@bitbucket.honaero.com/scm/aeroisca/isc-flat-file-requ-dashboard.git" \
+            "https://bitbucket.honaero.com/scm/aeroisca/isc-flat-file-requ-dashboard.git" \
             "$RUNNER_TEMP/bitbucket-source"
 
       - name: Synchronize website files
