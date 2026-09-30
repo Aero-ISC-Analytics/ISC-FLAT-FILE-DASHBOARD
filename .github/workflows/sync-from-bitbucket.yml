@@ -2,8 +2,7 @@ name: Sync from Bitbucket
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/10 * * * *"
+
 
 permissions:
   contents: write
