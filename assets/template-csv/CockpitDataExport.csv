@@ -1,1 +1,2 @@
-SBGID,SBG,MetricCategory,Metric,Measure,Year,Qtr,Month,Week,Value,Segment
+SBG,MetricCategory,Metric,Measure,Year,Qtr,Month,Week,Value,SBGID,Segment
+Ex. Electronic Solutions,Ex. Delivery,Ex. Order Count,Ex. Plan,Ex. 2026,Ex. Qtr 1,Ex. Feb,Ex. Week 5,Ex. 3358.83,Ex. A81000,Ex. No AOP PLanned
